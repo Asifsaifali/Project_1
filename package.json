@@ -1,0 +1,17 @@
+{
+  "name": "fullstack",
+  "version": "1.0.0",
+  "description": "This is going to be a full stack app",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "type":"module"
+    
+  },
+  "author": "Asif_saif_ali",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
