@@ -1,20 +1,18 @@
-import UserRepository from "../repository/user.repository";
+import UserRepository from "../repository/user.repository.js";
 
-class UserServices{
+class UserServices {
+  constructor() {
+    this.userRepository = new UserRepository();
+  }
 
-    constructor(){
-        this.userRepository = new UserRepository()
-    }
-
-async createUser(data){
+  async createUser(data) {
     try {
-        const user = await this.userRepository.createUser(data)
-        return user;
+      const user = await this.userRepository.createUser(data);
+      return user;
     } catch (error) {
-        console.log("something went wrong");  
+      console.log("something went wrong");
     }
   }
 }
-
 
 export default UserServices;

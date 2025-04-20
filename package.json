@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-     "dev": "nodemon index.js"
+    "dev": "nodemon index.js"
   },
   "author": "Asif_saif_ali",
   "license": "ISC",
@@ -15,6 +15,7 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "mongoose": "^8.13.2",
+    "nodemailer": "^6.10.1",
     "nodemon": "^3.1.9"
   }
 }
