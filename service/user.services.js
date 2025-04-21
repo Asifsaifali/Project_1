@@ -5,6 +5,14 @@ class UserServices {
     this.userRepository = new UserRepository();
   }
 
+  async getUser(email){
+    const user = await this.userRepository.getUser(email);
+    if (!user) {
+      return null;
+    }
+    return user;
+  }
+
   async createUser(data) {
     try {
       const user = await this.userRepository.createUser(data);
