@@ -1,11 +1,20 @@
-// Password Validation
+import bcrypt from 'bcrypt'
+
+//********************//Password Validation*******
 const PassValidation = (str) => {
   return /[A-Z]/.test(str);
 };
 
-// Email Validation
+//*******************//Email Validation\\*********
 const emailValidation = (str) => {
   return /\S+@\S+\.\S+/.test(str);
 };
 
-export { PassValidation, emailValidation };
+//*******************Password Hashing********//
+const hashPassword = async(pass) => {
+    const saltRounds = 10;
+      const hash = await bcrypt.hash(pass, saltRounds)
+      return hash
+  }
+
+export { PassValidation, emailValidation, hashPassword };

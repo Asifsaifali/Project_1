@@ -7,10 +7,11 @@ class UserServices {
 
   async getUser(email){
     const user = await this.userRepository.getUser(email);
-    if (!user) {
-      return null;
-    }
+    console.log(user);
+    
     return user;
+    
+    
   }
 
   async createUser(data) {
@@ -21,6 +22,8 @@ class UserServices {
       console.log("something went wrong");
     }
   }
+
+  
 }
 
 export default UserServices;

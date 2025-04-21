@@ -1,56 +1,64 @@
 import UserServices from "../service/user.services.js";
-import crypto from "crypto";
-import { PassValidation, emailValidation } from "../utils/validation.js";
+import User from "../model/User.model.js";
+import {
+  PassValidation,
+  emailValidation,
+  hashPassword,
+} from "../utils/index.js ";
+
 const userServices = new UserServices();
 
 const registerUser = async (req, res) => {
   try {
-   
     const pass = String(req.body.password);
-    if (!PassValidation(pass) || pass.length <= 5) {
+    if (pass.length <= 5) {
       return res.status(500).json({
-        message:
-          "Password must be greater than 5 characters and contain at least one uppercase letter",
+        message: "Password must be greater than 5 characters ",
+        success: false,
+        err: "Not fullfill the credentials",
+      });
+    } else if (!PassValidation(pass)) {
+      return res.status(500).json({
+        message: "Password must be contain at least one uppercase letter",
         success: false,
         err: "Not fullfill the credentials",
       });
     }
-  
+    //***************Email formating
     const email = String(req.body.email);
     if (!emailValidation(email)) {
       return res.status(500).json({
-        mesasge: "Email must be valid email format",
+        mesasge: "Email must be in valid format",
         success: false,
         err: "Not fullfill the credentials",
       });
     }
+    //******************User existance
+    // if (User.findOne({email : email})) {
+    //   return res.status(400).json({
+    //     message: "User with this email already exist",
+    //     success: false,
+    //     err: "User already exist",
+    //   });
+    // }
 
-    // const emailExist = await userServices.userRepository.findOne(email);
-    if (userServices.getUser(email)) {
-      return res.status(400).json({
-        message: "User with this email already exist",
-        success: false,
-        err: "User already exist",
-      });
-    }
-
-    // All fields validation
-    // All fields are required
+    //**************All fields are required
     if (!req.body.name || !req.body.email || !req.body.password) {
       return res.status(400).json({
-        message: "All fields are required",
+        message: "All fields are mandatory",
       });
     }
 
-    //User Creation
+    const hased = await hashPassword(req.body.password);
+    //***************User Creation
     const user = await userServices.createUser({
       name: req.body.name,
-      email: req.body.email,
-      password: req.body.password,
+      email: req.body.email.toLowerCase(),
+      password: hased,
     });
     return res.status(200).json({
       data: user,
-      messge: "new User created Successfully",
+      messge: "New User Created Successfully",
       success: true,
       err: {},
     });
@@ -61,6 +69,7 @@ const registerUser = async (req, res) => {
       success: false,
     });
   }
+  //****************************************/
 };
 
 export { registerUser };
