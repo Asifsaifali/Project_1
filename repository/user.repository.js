@@ -11,9 +11,23 @@ class UserRepository {
   }
 
   async getUser(email) {
-    const user = await User.findOne({ email  });
-    // console.log(user);
+    try {
+      const user = await User.findOne({ email  });
     return user;
+    } catch (error) {
+      throw new Error("Error in repository file");
+        
+    }
+  }
+
+  async getAllUser(){
+    try {
+      const allUser = await User.find()
+      return allUser
+    } catch (error) {
+       throw new Error("Error in repository file");
+       
+    }
   }
 }
 

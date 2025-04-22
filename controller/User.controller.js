@@ -1,5 +1,4 @@
-import UserServices from "../service/user.services.js";
-import User from "../model/User.model.js";
+import UserServices from "../service/user.services.js"; 
 import {
   PassValidation,
   emailValidation,
@@ -52,6 +51,7 @@ const registerUser = async (req, res) => {
 
     const hased = await hashPassword(req.body.password);
     //***************User Creation
+
     const user = await userServices.createUser({
       name: req.body.name,
       email: req.body.email.toLowerCase(),
@@ -73,4 +73,21 @@ const registerUser = async (req, res) => {
   //****************************************/
 };
 
-export { registerUser };
+const getAllUser = async(req,res)=>{
+ try {
+    const allUser = await userServices.getAllUser()
+    return res.status(200).json({
+      data : allUser,
+      status : "successfully fetched all user",
+      err : {}
+    })
+ } catch (error) {
+    res.status(400).json({
+      data : {},
+      success : false,
+      err : error
+    })
+ }
+}
+
+export { registerUser, getAllUser };

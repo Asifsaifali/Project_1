@@ -5,13 +5,14 @@ class UserServices {
     this.userRepository = new UserRepository();
   }
 
-  async getUser(email){
+  async getUser(email) {
+   try {
     const user = await this.userRepository.getUser(email);
-    // console.log(user);
-    
     return user;
-    
-    
+   } catch (error) {
+      throw new Error("Error in service");
+      
+   }
   }
 
   async createUser(data) {
@@ -23,7 +24,15 @@ class UserServices {
     }
   }
 
-  
+  async getAllUser(){
+  try {
+    const allUser = await this.userRepository.getAllUser()
+    return allUser
+  } catch (error) {
+    throw new Error("Error occured in Services");
+    
+  }
+  }
 }
 
 export default UserServices;
