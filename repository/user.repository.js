@@ -11,7 +11,9 @@ class UserRepository {
   }
 
   async getUser(email) {
-    return await User.findOne({ email : email});
+    const user = await User.findOne({ email  });
+    // console.log(user);
+    return user;
   }
 }
 

@@ -7,7 +7,7 @@ class UserServices {
 
   async getUser(email){
     const user = await this.userRepository.getUser(email);
-    console.log(user);
+    // console.log(user);
     
     return user;
     

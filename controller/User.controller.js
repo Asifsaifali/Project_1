@@ -11,7 +11,7 @@ const userServices = new UserServices();
 const registerUser = async (req, res) => {
   try {
     const pass = String(req.body.password);
-    if (pass.length <= 5) {
+    if (pass.length <= 5 && pass.length < 15) {
       return res.status(500).json({
         message: "Password must be greater than 5 characters ",
         success: false,
@@ -34,13 +34,14 @@ const registerUser = async (req, res) => {
       });
     }
     //******************User existance
-    // if (User.findOne({email : email})) {
-    //   return res.status(400).json({
-    //     message: "User with this email already exist",
-    //     success: false,
-    //     err: "User already exist",
-    //   });
-    // }
+    const existUser = await userServices.getUser(email)
+    if(existUser) {
+      return res.status(400).json({
+        message: "User with this email already exist, signUp with another mail",
+        success: false,
+        err: "User already exist",
+      });
+    }
 
     //**************All fields are required
     if (!req.body.name || !req.body.email || !req.body.password) {
