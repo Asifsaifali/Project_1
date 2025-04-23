@@ -6,13 +6,12 @@ class UserServices {
   }
 
   async getUser(email) {
-   try {
-    const user = await this.userRepository.getUser(email);
-    return user;
-   } catch (error) {
+    try {
+      const user = await this.userRepository.getUser(email);
+      return user;
+    } catch (error) {
       throw new Error("Error in service");
-      
-   }
+    }
   }
 
   async createUser(data) {
@@ -24,14 +23,23 @@ class UserServices {
     }
   }
 
-  async getAllUser(){
-  try {
-    const allUser = await this.userRepository.getAllUser()
-    return allUser
-  } catch (error) {
-    throw new Error("Error occured in Services");
-    
+  async getAllUser() {
+    try {
+      const allUser = await this.userRepository.getAllUser();
+      return allUser;
+    } catch (error) {
+      throw new Error("Error occured in Services");
+    }
   }
+
+  async getUserByEmail(email){
+    try {
+      const user = await this.userRepository.getUserByEmail(email)
+      return user;
+    } catch (error) {
+      throw new Error("Error occured in Services");
+    
+    }
   }
 }
 

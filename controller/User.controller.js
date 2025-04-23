@@ -73,6 +73,31 @@ const registerUser = async (req, res) => {
   //****************************************/
 };
 
+const getUserByEmail = async(req,res)=>{
+  try {
+    const userEmail = emailValidation(req.body.email)
+    if(!userEmail){
+      return res.status(400).json({
+        data : {},
+        message : "kindlly enter email in lower case",
+        err : {}
+      })
+    }
+    const user = await userServices.getUserByEmail(req.body.email)
+    return res.status(200).json({
+      data : user,
+      success : true,
+      message : "User with this email fetched successfully"
+    })
+  } catch (error) {
+    res.status(400).json({
+      data : {},
+      success : false,
+      err : error
+    })
+  }
+}
+
 const getAllUser = async(req,res)=>{
  try {
     const allUser = await userServices.getAllUser()
@@ -90,4 +115,4 @@ const getAllUser = async(req,res)=>{
  }
 }
 
-export { registerUser, getAllUser };
+export { registerUser, getAllUser , getUserByEmail};
