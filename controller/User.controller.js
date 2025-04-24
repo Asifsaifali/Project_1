@@ -1,4 +1,5 @@
-import UserServices from "../service/user.services.js"; 
+import UserServices from "../service/user.services.js";
+import crypto from "crypto";
 import {
   PassValidation,
   emailValidation,
@@ -33,8 +34,8 @@ const registerUser = async (req, res) => {
       });
     }
     //******************User existance
-    const existUser = await userServices.getUser(email)
-    if(existUser) {
+    const existUser = await userServices.getUser(email);
+    if (existUser) {
       return res.status(400).json({
         message: "User with this email already exist, signUp with another mail",
         success: false,
@@ -57,6 +58,9 @@ const registerUser = async (req, res) => {
       email: req.body.email.toLowerCase(),
       password: hased,
     });
+    const token = crypto.randomBytes(32).toString("hex");
+    user.VerificationToken = token;
+    await user.save();
     return res.status(200).json({
       data: user,
       messge: "New User Created Successfully",
@@ -70,49 +74,74 @@ const registerUser = async (req, res) => {
       success: false,
     });
   }
+
   //****************************************/
 };
 
-const getUserByEmail = async(req,res)=>{
+const getUserByEmail = async (req, res) => {
   try {
-    const userEmail = emailValidation(req.body.email)
-    if(!userEmail){
+    const userEmail = emailValidation(req.body.email);
+    if (!userEmail) {
       return res.status(400).json({
-        data : {},
-        message : "kindlly enter email in lower case",
-        err : {}
-      })
+        data: {},
+        message: "kindlly enter email in lower case",
+        err: {},
+      });
     }
-    const user = await userServices.getUserByEmail(req.body.email)
+    const user = await userServices.getUserByEmail(req.body.email);
     return res.status(200).json({
-      data : user,
-      success : true,
-      message : "User with this email fetched successfully"
-    })
+      data: user,
+      success: true,
+      message: "User with this email fetched successfully",
+    });
   } catch (error) {
     res.status(400).json({
-      data : {},
-      success : false,
-      err : error
-    })
+      data: {},
+      success: false,
+      err: error,
+    });
   }
-}
+};
 
-const getAllUser = async(req,res)=>{
- try {
-    const allUser = await userServices.getAllUser()
+const getAllUser = async (req, res) => {
+  try {
+    const allUser = await userServices.getAllUser();
     return res.status(200).json({
-      data : allUser,
-      status : "successfully fetched all user",
-      err : {}
-    })
- } catch (error) {
+      data: allUser,
+      status: "successfully fetched all user",
+      err: {},
+    });
+  } catch (error) {
     res.status(400).json({
-      data : {},
-      success : false,
-      err : error
-    })
- }
-}
+      data: {},
+      success: false,
+      err: error,
+    });
+  }
+};
 
-export { registerUser, getAllUser , getUserByEmail};
+const verifyUser = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const user = await userServices.verifyUser(token);
+    if (!user) {
+      return res.status(400).json({
+        message: "No User found",
+        success: false,
+      });
+    }
+    return res.status(200).json({
+      data: user,
+      message: "User found with given token",
+      success: true,
+    });
+  } catch (error) {
+    res.status(400).json({
+      data: {},
+      success: false,
+      err: error,
+    });
+  }
+};
+
+export { registerUser, getAllUser, getUserByEmail, verifyUser };

@@ -38,6 +38,18 @@ class UserRepository {
       throw new Error("Error in repository file");
     }
   }
+
+  async verifyUser(token){
+    try {
+      const user = await User.findOne({VerificationToken : token})
+      // console.log(user);
+      
+      return user
+    } catch (error) {
+        throw new Error("Error found in respository");
+              
+    }
+  }
 }
 
 export default UserRepository;

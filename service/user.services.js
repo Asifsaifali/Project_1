@@ -1,5 +1,5 @@
 import UserRepository from "../repository/user.repository.js";
-import nodemailer from "nodemailer"
+import nodemailer from "nodemailer";
 
 class UserServices {
   constructor() {
@@ -33,17 +33,16 @@ class UserServices {
     }
   }
 
-  async getUserByEmail(email){
+  async getUserByEmail(email) {
     try {
-      const user = await this.userRepository.getUserByEmail(email)
+      const user = await this.userRepository.getUserByEmail(email);
       return user;
     } catch (error) {
       throw new Error("Error occured in Services");
-    
     }
   }
 
-  async EmailSender(){
+  async EmailSender(email) {
     try {
       const transporter = nodemailer.createTransport({
         host: "smtp.ethereal.email",
@@ -57,20 +56,28 @@ class UserServices {
 
       const info = await transporter.sendMail({
         from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>', // sender address
-        to: "bar@example.com, baz@example.com", // list of receivers
+        to: email,
         subject: "Hello ✔", // Subject line
-        text: "Hello world?", // plain text body
-        html: "<b>Hello world?</b>", // html body
+        text: `<h1>Please click on te following linnk to verify</h1>
+          ${process.env.BASE_URL}/api/v1/users/verify/${token}
+        `,
       });
-    
-      console.log("Message sent: %s", info.messageId);
 
+      console.log("Message sent: %s", info.messageId);
+    } catch (error) {
+      throw new Error("Error occured in Services");
+    }
+  }
+
+  async verifyUser(token) {
+    try {
+      const user = await this.userRepository.verifyUser(token)
+      return user;
     } catch (error) {
       throw new Error("Error occured in Services");
       
     }
   }
-
 }
 
 export default UserServices;
