@@ -78,6 +78,16 @@ class UserServices {
       
     }
   }
+
+  async userLogin(email){
+    try {
+      const user = await this.userRepository.userLogin(email)
+      return user;
+    } catch (error) {
+      throw new Error("Error occured in Services");
+     
+    }
+  }
 }
 
 export default UserServices;

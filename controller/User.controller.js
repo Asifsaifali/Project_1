@@ -1,4 +1,5 @@
 import UserServices from "../service/user.services.js";
+import bcrypt from "bcrypt"
 import crypto from "crypto";
 import {
   PassValidation,
@@ -144,4 +145,35 @@ const verifyUser = async (req, res) => {
   }
 };
 
-export { registerUser, getAllUser, getUserByEmail, verifyUser };
+const userLogin = async(req,res)=>{
+  try {
+    const { email, password } = req.body;
+    if (!email) {
+      return res.status(400).json({
+        message: "No User found",
+        success: false,
+      });
+    }
+    const user = await userServices.userLogin(email)
+    const pass =await  bcrypt.compare(password, user.password)
+    if(!pass){
+      res.status(400).json({
+        data: {},
+        success: false,
+        err: error,
+      });
+    }
+    return res.status(200).json({
+      message : `${user.name} logged in successfully`,
+      success : true
+    })
+  } catch (error) {
+    res.status(400).json({
+      data: {},
+      success: false,
+      err: error,
+    });
+  }
+}
+
+export { registerUser, getAllUser, getUserByEmail, verifyUser, userLogin };
