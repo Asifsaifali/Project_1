@@ -1,6 +1,7 @@
 import UserServices from "../service/user.services.js";
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 import crypto from "crypto";
+import jwt from "jsonwebtoken";
 import {
   PassValidation,
   emailValidation,
@@ -145,7 +146,7 @@ const verifyUser = async (req, res) => {
   }
 };
 
-const userLogin = async(req,res)=>{
+const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email) {
@@ -154,19 +155,29 @@ const userLogin = async(req,res)=>{
         success: false,
       });
     }
-    const user = await userServices.userLogin(email)
-    const pass =await  bcrypt.compare(password, user.password)
-    if(!pass){
+    const user = await userServices.userLogin(email);
+    const pass = await bcrypt.compare(password, user.password);
+    if (!pass) {
       res.status(400).json({
         data: {},
         success: false,
         err: error,
       });
     }
+    const token = jwt.sign({ id: user._id, role: user.role }, "shhhhh", {
+      expiresIn: "24h",
+    });
+
+    const cookieOption = {
+      httpOnly: true,
+      secure: true,
+      maxAge: 24 * 60 * 60 * 100,
+    };
+    res.cookie("token", token, cookieOption);
     return res.status(200).json({
-      message : `${user.name} logged in successfully`,
-      success : true
-    })
+      message: `${user.name} logged in successfully`,
+      success: true,
+    });
   } catch (error) {
     res.status(400).json({
       data: {},
@@ -174,6 +185,6 @@ const userLogin = async(req,res)=>{
       err: error,
     });
   }
-}
+};
 
 export { registerUser, getAllUser, getUserByEmail, verifyUser, userLogin };
