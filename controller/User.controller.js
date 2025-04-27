@@ -149,6 +149,7 @@ const verifyUser = async (req, res) => {
 const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log(email, password);
     if (!email) {
       return res.status(400).json({
         message: "No User found",
@@ -164,19 +165,25 @@ const userLogin = async (req, res) => {
         err: error,
       });
     }
-    const token = jwt.sign({ id: user._id, role: user.role }, "shhhhh", {
-      expiresIn: "24h",
-    });
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "24h",
+      }
+    );
 
     const cookieOption = {
       httpOnly: true,
       secure: true,
-      maxAge: 24 * 60 * 60 * 100,
+      maxAge: 24 * 60 * 60 * 1000,
     };
     res.cookie("token", token, cookieOption);
+
     return res.status(200).json({
       message: `${user.name} logged in successfully`,
       success: true,
+      token: user.VerificationToken,
     });
   } catch (error) {
     res.status(400).json({
@@ -187,4 +194,18 @@ const userLogin = async (req, res) => {
   }
 };
 
-export { registerUser, getAllUser, getUserByEmail, verifyUser, userLogin };
+const userProfile = async (req, res) => {
+  try {
+  } catch (error) {}
+};
+
+const resetPassword = async (req, res) => {};
+export {
+  registerUser,
+  getAllUser,
+  getUserByEmail,
+  verifyUser,
+  userLogin,
+  userProfile,
+  resetPassword,
+};

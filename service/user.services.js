@@ -42,15 +42,14 @@ class UserServices {
     }
   }
 
-  async EmailSender(email) {
+  async EmailSender(token) {
     try {
       const transporter = nodemailer.createTransport({
-        host: "smtp.ethereal.email",
-        port: 587,
-        secure: false, // true for port 465, false for other ports
+        host: "sandbox.smtp.mailtrap.io",
+        port: 2525,
         auth: {
-          user: "maddison53@ethereal.email",
-          pass: "jn7jnAPss4f63QBp6D",
+          user: "71fe3c1a64af19",
+          pass: "****8f94",
         },
       });
 
@@ -58,7 +57,7 @@ class UserServices {
         from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>', // sender address
         to: email,
         subject: "Hello ✔", // Subject line
-        text: `<h1>Please click on te following linnk to verify</h1>
+        text: `<h1>Please click on te following link to verify</h1>
           ${process.env.BASE_URL}/api/v1/users/verify/${token}
         `,
       });
@@ -71,21 +70,19 @@ class UserServices {
 
   async verifyUser(token) {
     try {
-      const user = await this.userRepository.verifyUser(token)
+      const user = await this.userRepository.verifyUser(token);
       return user;
     } catch (error) {
       throw new Error("Error occured in Services");
-      
     }
   }
 
-  async userLogin(email){
+  async userLogin(email) {
     try {
-      const user = await this.userRepository.userLogin(email)
+      const user = await this.userRepository.userLogin(email);
       return user;
     } catch (error) {
       throw new Error("Error occured in Services");
-     
     }
   }
 }
