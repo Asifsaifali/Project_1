@@ -196,6 +196,10 @@ const userLogin = async (req, res) => {
 
 const userProfile = async (req, res) => {
   try {
+    const user = req.user
+    console.log("in profile section");
+    console.log(user);
+    
   } catch (error) {}
 };
 
