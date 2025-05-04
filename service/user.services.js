@@ -85,6 +85,15 @@ class UserServices {
       throw new Error("Error occured in Services");
     }
   }
+
+  async deletUser(email){
+    try {
+      const user = await this.userRepository.deleteUser(email)
+      return user
+    } catch (error) {
+      throw new Error("Error occured in Services");
+    }
+  }
 }
 
 export default UserServices;

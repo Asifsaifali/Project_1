@@ -196,11 +196,32 @@ const userLogin = async (req, res) => {
 
 const userProfile = async (req, res) => {
   try {
-    const user = req.user
+    const user = req.user;
     console.log("in profile section");
     console.log(user);
-    
   } catch (error) {}
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const email = req.body.email;
+    const user = await userServices.userRepository.deleteUser(email);
+    if (!user.deletedCount)
+      return res.status(400).json({
+        message: "No User found with this email",
+      });
+    return res.status(200).json({
+      data: user,
+      message: "User Deleted with given email successfully",
+      success: true,
+    });
+  } catch (error) {
+    res.status(400).json({
+      data: {},
+      success: false,
+      err: error,
+    });
+  }
 };
 
 const resetPassword = async (req, res) => {};
@@ -212,4 +233,5 @@ export {
   userLogin,
   userProfile,
   resetPassword,
+  deleteUser,
 };

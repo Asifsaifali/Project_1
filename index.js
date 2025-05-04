@@ -14,6 +14,6 @@ database()
 app.use("/api/v1/users",UserRoute)
 
 app.listen(PORT, ()=>{
-    console.log("Server runng at Port 8000");
+    console.log(`Server running at Port ${PORT}`);
     
 })
