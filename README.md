@@ -1,0 +1,64 @@
+# Welcome to Project Setup
+
+## 🔐 User Authentication API by Asif_saif_ali
+
+- A secure and minimal Node.js backend project for **user authentication**, built with:
+
+- **Express.js** for the server
+- **MongoDB** with Mongoose for the database
+- **JWT (JSON Web Tokens)** for authentication
+- **bcrypt** for password hashing
+
+---
+
+## 🚀 Features
+
+- ✅ User registration (`/register`)
+- ✅ User login (`/login`)
+- ✅ Password encryption with `bcryptjs`
+- ✅ JWT-based authentication & protected routes
+- ✅ Modular code with routes and middleware
+
+---
+
+## 🛠️ Technologies Used
+
+- Node.js
+- Express.js
+- MongoDB + Mongoose
+- bcryptjs
+- jsonwebtoken
+- dotenv (for environment variables)
+
+---
+
+## 📁 Project Structure
+
+├── .git/                  # Git configuration
+├── config/                # App configuration (e.g., DB connection, environment settings)
+├── controller/            # Handles request logic, talks to services
+├── middleware/            # Middleware for auth, validation, error handling, etc.
+├── model/                 # Mongoose schemas and models
+├── node_modules/          # Project dependencies
+├── repository/            # Data access layer (DB queries, Mongo logic)
+├── routes/                # API route definitions
+├── service/               # Business logic layer (calls repositories)
+├── utils/                 # Utility functions (e.g., token generation, hashing)
+├── .env                   # Environment variables (secrets, DB URI, JWT key)
+├── .gitignore             # Ignore files for Git
+├── index.js               # Application entry point
+├── package-lock.json      # Dependency tree lock
+├── package.json           # Project metadata and dependencies
+└── README.md              # Project documentation
+
+## 📁 Project Architecture
+
+This backend follows a **Modular MVC pattern** with separation of concerns:
+
+- `routes` ➜ defines API endpoints  
+- `controller` ➜ handles HTTP logic  
+- `service` ➜ contains core business rules  
+- `repository` ➜ manages database operations  
+- `middleware` ➜ handles authentication, error handling  
+- `utils` ➜ stores reusable helper functions  
+- `config` ➜ holds configuration like DB, constants  
